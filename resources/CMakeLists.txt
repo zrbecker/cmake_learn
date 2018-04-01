@@ -1,0 +1,1 @@
+configure_file(cat.png cat.png COPYONLY)
