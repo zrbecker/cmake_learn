@@ -1,4 +1,4 @@
-set(SOURCES game.cc)
+set(SOURCES game.cc sdl_application.cc)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
