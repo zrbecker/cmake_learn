@@ -1,3 +1,6 @@
+#ifndef GAME_SDL_APPLICATION_H
+#define GAME_SDL_APPLICATION_H
+
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -36,3 +39,5 @@ private:
   bool running_;
   std::map<std::string, Image> images_;
 };
+
+#endif  // GAME_SDL_APPLICATION_H
