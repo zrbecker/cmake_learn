@@ -83,11 +83,10 @@ public:
 
 protected:
   virtual void setup() {
-    images_["cat"] = load_png("./resources/cat.png");
-    SDL_SetRenderDrawColor(renderer_, 0, 0, 255, 255);
-    SDL_RenderClear(renderer_);
-    SDL_RenderCopy(renderer_, images_["cat"].texture, NULL, NULL);
-    SDL_RenderPresent(renderer_);
+    this->load_png("cat", "./resources/cat.png");
+    this->clear_display(0, 0, 255, 255);
+    this->draw_image("cat");
+    this->flip_display();
   }
 
   virtual void render() {
@@ -97,21 +96,42 @@ protected:
 
   }
 
-  Image load_png(const std::string& filename) {
+  void draw_image(const std::string& image_name) {
+    SDL_RenderCopy(renderer_, images_.at(image_name).texture, NULL, NULL);
+  }
+
+  void clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    SDL_SetRenderDrawColor(renderer_, r, g, b, a);
+    SDL_RenderClear(renderer_);
+  }
+
+  void flip_display() {
+    SDL_RenderPresent(renderer_);
+  }
+
+  Image load_png(const std::string& image_name, const std::string& filename) {
     SDL_Surface* surface = IMG_Load(filename.c_str());
     if (!surface) {
       throw SDLException(std::string("IMG_Load Error: ") + SDL_GetError());
     }
+
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer_, surface);
     if (!texture) {
       throw SDLException(
         std::string("SDL_CreateTextureFromSurface Error: ") + SDL_GetError()
       );
     }
-    return Image {
-      surface,
-      texture
-    };
+
+    Image image;
+    image.surface = surface;
+    image.texture = texture;
+    
+    if (images_.count(image_name) > 0) {
+      SDL_FreeSurface(images_[image_name].surface);
+      SDL_DestroyTexture(images_[image_name].texture);
+    }
+
+    images_[image_name] = image;
   }
 
 private:
