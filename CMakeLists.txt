@@ -14,5 +14,6 @@ find_package(gtest REQUIRED)
 
 add_subdirectory(examples/hello_world)
 add_subdirectory(resources)
+add_subdirectory(src/game)
 add_subdirectory(src/playground)
 add_subdirectory(src/tests)
