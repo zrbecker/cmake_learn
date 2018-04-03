@@ -22,6 +22,10 @@ public:
 private:
   FrameCounter update_counter_;
   FrameCounter frame_counter_;
+
+  int cat_x_;
+  int cat_y_;
+  bool move_right_;
 };
 
 #endif  // GAME_CAT_GAME_LOGIC

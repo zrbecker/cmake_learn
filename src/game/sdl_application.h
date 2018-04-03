@@ -25,7 +25,8 @@ public:
 
   void run();
 
-  void draw_image(const std::string& image_name);
+  void draw_image(const std::string& image_name, int x, int y);
+  void resize_image(const std::string& image_name, int w, int h);
   void clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
   void flip_display();
   void load_image(const std::string& image_name, const std::string& filename);

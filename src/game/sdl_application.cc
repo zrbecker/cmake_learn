@@ -1,5 +1,7 @@
 #include "sdl_application.h"
 
+#include <iostream>
+
 #include "SDL_image.h"
 
 SDLApplication::SDLApplication(GameLogic& game_logic)
@@ -81,8 +83,48 @@ void SDLApplication::run() {
   game_logic_.cleanup(*this);
 }
 
-void SDLApplication::draw_image(const std::string& image_name) {
-  SDL_RenderCopy(renderer_, images_.at(image_name).texture, NULL, NULL);
+void SDLApplication::resize_image(const std::string& image_name, int w, int h) {
+  Image image = images_[image_name];
+
+  SDL_Texture* screen_texture = SDL_GetRenderTarget(renderer_);
+
+  Uint32 format;
+  int access, screen_w, screen_h;
+  SDL_QueryTexture(screen_texture, &format, &access, &screen_w, &screen_h);
+
+  SDL_Texture* resize_texture = SDL_CreateTexture(
+    renderer_, format, SDL_TEXTUREACCESS_TARGET, w, h);
+  if (!resize_texture) {
+    std::cerr << "SDL_CreateTexture: " << SDL_GetError() << std::endl;
+  }
+  SDL_SetRenderTarget(renderer_, resize_texture);
+
+  SDL_SetRenderDrawColor(renderer_, 0, 0, 0, 255);
+  SDL_RenderClear(renderer_);
+  int error = SDL_RenderCopy(renderer_, image.texture, NULL, NULL);
+  SDL_RenderPresent(renderer_);
+  if (error != 0) {
+    std::cerr << "SDL_RenderCopy: " << SDL_GetError() << std::endl;
+  }
+  SDL_SetTextureAlphaMod(resize_texture, 0);
+
+  SDL_DestroyTexture(image.texture);
+  image.texture = resize_texture;
+
+  images_[image_name] = image;
+
+  SDL_SetRenderTarget(renderer_, screen_texture);
+}
+
+void SDLApplication::draw_image(const std::string& image_name, int x, int y) {
+  Image image = images_[image_name];
+
+  Uint32 format;
+  int access, w, h;
+  SDL_QueryTexture(image.texture, &format, &access, &w, &h);
+
+  SDL_Rect dest_rect {x, y, w, h};
+  SDL_RenderCopy(renderer_, images_.at(image_name).texture, NULL, &dest_rect);
 }
 
 void SDLApplication::clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
