@@ -28,7 +28,7 @@ public:
   void draw_image(const std::string& image_name);
   void clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
   void flip_display();
-  void load_png(const std::string& image_name, const std::string& filename);
+  void load_image(const std::string& image_name, const std::string& filename);
 
 private:
   SDL_Window* window_;

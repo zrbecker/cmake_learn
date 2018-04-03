@@ -54,6 +54,7 @@ SDLApplication::~SDLApplication() {
 void SDLApplication::run() {
   game_logic_.setup(*this);
   running_ = true;
+  Uint32 last = SDL_GetTicks();
   while (running_) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -61,8 +62,18 @@ void SDLApplication::run() {
         running_ = false;
       }
     }
-    game_logic_.render(*this);
-    SDL_Delay(2);
+
+    Uint32 now = SDL_GetTicks();
+    double seconds = (now - last) / 1000.0;
+    
+    if (seconds >= 1.0 / 30.0) {
+      game_logic_.update(*this, seconds);
+      last = now;
+    }
+
+    game_logic_.render(*this, seconds);
+
+    // SDL_Delay(2);
   }
   game_logic_.cleanup(*this);
 }
@@ -80,7 +91,8 @@ void SDLApplication::flip_display() {
   SDL_RenderPresent(renderer_);
 }
 
-void SDLApplication::load_png(const std::string& image_name, const std::string& filename) {
+void SDLApplication::load_image(
+    const std::string& image_name, const std::string& filename) {
   SDL_Surface* surface = IMG_Load(filename.c_str());
   if (!surface) {
     throw SDLException(std::string("IMG_Load Error: ") + SDL_GetError());

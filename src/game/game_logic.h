@@ -7,7 +7,8 @@ class GameLogic {
 public:
   virtual void setup(SDLApplication& app) = 0;
   virtual void cleanup(SDLApplication& app) = 0;
-  virtual void render(SDLApplication& app) = 0;
+  virtual void render(SDLApplication& app, double seconds) = 0;
+  virtual void update(SDLApplication& app, double seconds) = 0;
 };
 
 #endif  // GAME_GAME_LOGIC_H
