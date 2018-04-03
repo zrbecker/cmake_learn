@@ -1,0 +1,31 @@
+#include "frame_counter.h"
+
+#include <iostream>
+
+FrameCounter::FrameCounter(const std::string& name)
+  : name_(name),
+    last_print_message_(0),
+    total_seconds_(0),
+    frame_counts_() {}
+
+void FrameCounter::report_frame(double seconds_passed) {
+  if (frame_counts_.size() == 0 ||
+      int(total_seconds_ + seconds_passed) - int(total_seconds_) >= 1) {
+    frame_counts_.push_back(0);
+  }
+  total_seconds_ += seconds_passed;
+  frame_counts_.back() += 1;
+
+  if (total_seconds_ > last_print_message_ + 5.0 && frame_counts_.size() > 1) {
+    while (frame_counts_.size() > 21) {
+      frame_counts_.erase(frame_counts_. begin());
+    }
+    int total_frames = 0;
+    for (int i = 0; i < frame_counts_.size() - 1; ++i) {
+      total_frames += frame_counts_[i];
+    }
+    double average_frames = double(total_frames) / (frame_counts_.size() - 1);
+    std::cout << name_ << ": " << average_frames << std::endl;
+    last_print_message_ = total_seconds_;
+  }
+}

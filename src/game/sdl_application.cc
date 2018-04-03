@@ -54,7 +54,8 @@ SDLApplication::~SDLApplication() {
 void SDLApplication::run() {
   game_logic_.setup(*this);
   running_ = true;
-  Uint32 last = SDL_GetTicks();
+  Uint32 last_update = SDL_GetTicks();
+  Uint32 last_frame = last_update;
   while (running_) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -64,16 +65,18 @@ void SDLApplication::run() {
     }
 
     Uint32 now = SDL_GetTicks();
-    double seconds = (now - last) / 1000.0;
+    double last_update_seconds = (now - last_update) / 1000.0;
+    double last_frame_seconds = (now - last_frame) / 1000.0;
     
-    if (seconds >= 1.0 / 30.0) {
-      game_logic_.update(*this, seconds);
-      last = now;
+    if (last_update_seconds >= 1.0 / 30.0) {
+      game_logic_.update(*this, last_update_seconds);
+      last_update = now;
     }
 
-    game_logic_.render(*this, seconds);
+    game_logic_.render(*this, last_update_seconds, last_frame_seconds);
+    last_frame = now;
 
-    // SDL_Delay(2);
+    SDL_Delay(1);
   }
   game_logic_.cleanup(*this);
 }
