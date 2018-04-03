@@ -2,11 +2,12 @@
 
 #include "SDL_image.h"
 
-SDLApplication::SDLApplication()
+SDLApplication::SDLApplication(GameLogic& game_logic)
     : window_(nullptr),
       renderer_(nullptr),
       running_(false),
-      images_() {
+      images_(),
+      game_logic_(game_logic) {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     throw SDLException(std::string("SDL_Init Error: ") + SDL_GetError());
   }
@@ -51,7 +52,7 @@ SDLApplication::~SDLApplication() {
 }
 
 void SDLApplication::run() {
-  setup();
+  game_logic_.setup(*this);
   running_ = true;
   while (running_) {
     SDL_Event event;
@@ -60,23 +61,10 @@ void SDLApplication::run() {
         running_ = false;
       }
     }
-    render();
+    game_logic_.render(*this);
     SDL_Delay(2);
   }
-  cleanup();
-}
-
-void SDLApplication::setup() {
-  this->load_png("cat", "./resources/cat.png");
-  this->clear_display(0, 0, 255, 255);
-  this->draw_image("cat");
-  this->flip_display();
-}
-
-void SDLApplication::render() {
-}
-
-void SDLApplication::cleanup() {
+  game_logic_.cleanup(*this);
 }
 
 void SDLApplication::draw_image(const std::string& image_name) {
