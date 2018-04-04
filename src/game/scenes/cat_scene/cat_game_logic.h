@@ -14,15 +14,15 @@ class CatGameLogic : public engine::GameLogic {
 public:
   CatGameLogic();
 
-  virtual void setup(engine::SDLApplication& app) override;
-  virtual void cleanup(engine::SDLApplication& app) override {};
+  virtual void setup(engine::Engine& app) override;
+  virtual void cleanup(engine::Engine& app) override {};
   virtual void render(
-    engine::SDLApplication& app,
+    engine::Engine& app,
     double last_update_seconds,
     double last_frame_seconds
   ) override;
   virtual void update(
-      engine::SDLApplication& app, double last_update_seconds) override;
+      engine::Engine& app, double last_update_seconds) override;
 
 private:
   engine::FrameCounter update_counter_;

@@ -1,6 +1,5 @@
 set(SOURCES cat_game_logic.cc)
 
-include_directories(${SDL2_INCLUDE_DIRS})
-include_directories(${SDL2_TTF_INCLUDE_DIRS})
-include_directories(../../..)
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 add_library(game.scenes.cat_scene ${SOURCES})

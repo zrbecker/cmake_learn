@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "game_logic.h"
+#include "engine.h"
 
 namespace game {
 namespace engine {
@@ -22,10 +22,10 @@ struct Image {
   SDL_Texture* texture;
 };
 
-class SDLApplication {
+class SDLEngine : public Engine {
 public:
-  SDLApplication(GameLogic& game_logic);
-  ~SDLApplication();
+  SDLEngine(GameLogic& game_logic);
+  ~SDLEngine();
 
   void run();
 

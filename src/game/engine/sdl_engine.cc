@@ -1,14 +1,16 @@
-#include "sdl_application.h"
+#include "sdl_engine.h"
 
 #include <iostream>
 
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 
+#include "game_logic.h"
+
 namespace game {
 namespace engine {
 
-SDLApplication::SDLApplication(GameLogic& game_logic)
+SDLEngine::SDLEngine(GameLogic& game_logic)
     : window_(nullptr),
       renderer_(nullptr),
       running_(false),
@@ -43,7 +45,7 @@ SDLApplication::SDLApplication(GameLogic& game_logic)
   }
 }
 
-SDLApplication::~SDLApplication() {
+SDLEngine::~SDLEngine() {
   for (const auto& image_kvp : images_) {
     const auto& image = image_kvp.second;
     SDL_FreeSurface(image.surface);
@@ -68,7 +70,7 @@ SDLApplication::~SDLApplication() {
   SDL_Quit();
 }
 
-void SDLApplication::run() {
+void SDLEngine::run() {
   game_logic_.setup(*this);
   running_ = true;
   Uint32 last_update = SDL_GetTicks();
@@ -100,7 +102,7 @@ void SDLApplication::run() {
   game_logic_.cleanup(*this);
 }
 
-void SDLApplication::resize_image(const std::string& image_name, int w, int h) {
+void SDLEngine::resize_image(const std::string& image_name, int w, int h) {
   Image image = images_.at(image_name);
 
   SDL_Texture* screen_texture = SDL_GetRenderTarget(renderer_);
@@ -133,7 +135,7 @@ void SDLApplication::resize_image(const std::string& image_name, int w, int h) {
   SDL_SetRenderTarget(renderer_, screen_texture);
 }
 
-void SDLApplication::draw_image(const std::string& image_name, int x, int y) {
+void SDLEngine::draw_image(const std::string& image_name, int x, int y) {
   Image image = images_.at(image_name);
 
   Uint32 format;
@@ -144,16 +146,16 @@ void SDLApplication::draw_image(const std::string& image_name, int x, int y) {
   SDL_RenderCopy(renderer_, images_.at(image_name).texture, NULL, &dest_rect);
 }
 
-void SDLApplication::clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+void SDLEngine::clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
   SDL_SetRenderDrawColor(renderer_, r, g, b, a);
   SDL_RenderClear(renderer_);
 }
 
-void SDLApplication::flip_display() {
+void SDLEngine::flip_display() {
   SDL_RenderPresent(renderer_);
 }
 
-void SDLApplication::load_image(
+void SDLEngine::load_image(
     const std::string& image_name, const std::string& filename) {
   SDL_Surface* surface = IMG_Load(filename.c_str());
   if (!surface) {
@@ -179,7 +181,7 @@ void SDLApplication::load_image(
   images_[image_name] = image;
 }
 
-void SDLApplication::load_font(
+void SDLEngine::load_font(
     const std::string& font_name, const std::string& filename, int size) {
   TTF_Font* font = TTF_OpenFont(filename.c_str(), size);
   if (!font) {
@@ -188,7 +190,7 @@ void SDLApplication::load_font(
   fonts_[font_name] = font;
 }
 
-void SDLApplication::render_text(
+void SDLEngine::render_text(
     const std::string& font_name,
     const std::string& text,
     int x, int y,

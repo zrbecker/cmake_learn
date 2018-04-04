@@ -2,9 +2,7 @@
 add_subdirectory(engine)
 add_subdirectory(scenes/cat_scene)
 
-include_directories(..)
-include_directories(${SDL2_INCLUDE_DIRS})
-include_directories(${SDL2_TTF_INCLUDE_DIRS})
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 add_executable(game main.cc)
 

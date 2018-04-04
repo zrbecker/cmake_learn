@@ -1,4 +1,4 @@
-set(SOURCES sdl_application.cc frame_counter.cc)
+set(SOURCES engine.cc sdl_engine.cc frame_counter.cc)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
