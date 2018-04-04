@@ -9,6 +9,10 @@ namespace engine {
 
 class GameLogic;
 
+class EngineException : public std::runtime_error {
+  using std::runtime_error::runtime_error;
+};
+
 class Engine {
 public:
   static std::unique_ptr<Engine> create_sdl_engine(GameLogic& game_logic);

@@ -17,29 +17,29 @@ SDLEngine::SDLEngine(GameLogic& game_logic)
       images_(),
       game_logic_(game_logic) {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-    throw SDLException(std::string("SDL_Init Error: ") + SDL_GetError());
+    throw EngineException(std::string("SDL_Init Error: ") + SDL_GetError());
   }
 
   if (IMG_Init(IMG_INIT_PNG) == 0) {
-    throw SDLException(std::string("IMG_Init Error: ") + IMG_GetError());
+    throw EngineException(std::string("IMG_Init Error: ") + IMG_GetError());
   }
 
   if (TTF_Init() != 0) {
-    throw SDLException(std::string("TTF_Init Error: ") + TTF_GetError());
+    throw EngineException(std::string("TTF_Init Error: ") + TTF_GetError());
   }
 
   window_ = SDL_CreateWindow(
     "SDLApplication", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
     800, 600, 0);
   if (!window_) {
-    throw SDLException(
+    throw EngineException(
       std::string("SDL_CreateWindow Error: ") + SDL_GetError()
     );
   }
 
   renderer_ = SDL_CreateRenderer(window_, -1, 0);
   if (!renderer_) {
-    throw SDLException(
+    throw EngineException(
       std::string("SDL_CreateRenderer Error: ") + SDL_GetError()
     );
   }
@@ -159,12 +159,12 @@ void SDLEngine::load_image(
     const std::string& image_name, const std::string& filename) {
   SDL_Surface* surface = IMG_Load(filename.c_str());
   if (!surface) {
-    throw SDLException(std::string("IMG_Load Error: ") + SDL_GetError());
+    throw EngineException(std::string("IMG_Load Error: ") + SDL_GetError());
   }
 
   SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer_, surface);
   if (!texture) {
-    throw SDLException(
+    throw EngineException(
       std::string("SDL_CreateTextureFromSurface Error: ") + SDL_GetError()
     );
   }
@@ -185,7 +185,7 @@ void SDLEngine::load_font(
     const std::string& font_name, const std::string& filename, int size) {
   TTF_Font* font = TTF_OpenFont(filename.c_str(), size);
   if (!font) {
-    throw SDLException(std::string("TTF_OpenFont: ") + TTF_GetError());
+    throw EngineException(std::string("TTF_OpenFont: ") + TTF_GetError());
   }
   fonts_[font_name] = font;
 }

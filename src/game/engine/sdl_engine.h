@@ -13,10 +13,6 @@
 namespace game {
 namespace engine {
 
-class SDLException : public std::runtime_error {
-  using std::runtime_error::runtime_error;
-};
-
 struct Image {
   SDL_Surface* surface;
   SDL_Texture* texture;
