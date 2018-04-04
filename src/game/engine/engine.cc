@@ -1,6 +1,6 @@
 #include "engine.h"
 
-#include "sdl_engine.h"
+#include "sdl_impl/sdl_engine.h"
 
 namespace game {
 namespace engine {

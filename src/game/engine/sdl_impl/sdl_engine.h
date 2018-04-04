@@ -8,7 +8,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-#include "engine.h"
+#include "game/engine/engine.h"
 
 namespace game {
 namespace engine {

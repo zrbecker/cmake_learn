@@ -5,7 +5,7 @@
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 
-#include "game_logic.h"
+#include "game/engine/game_logic.h"
 
 namespace game {
 namespace engine {
