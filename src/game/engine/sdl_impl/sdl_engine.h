@@ -23,20 +23,24 @@ public:
   SDLEngine(GameLogic& game_logic);
   ~SDLEngine();
 
-  void run();
+  void run() override;
 
-  void draw_image(const std::string& image_name, int x, int y);
-  void resize_image(const std::string& image_name, int w, int h);
-  void clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
-  void flip_display();
-  void load_image(const std::string& image_name, const std::string& filename);
+  void draw_image(const std::string& image_name, int x, int y) override;
+  void resize_image(const std::string& image_name, int w, int h) override;
+  void clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a) override;
+  void flip_display() override;
+  void load_image(
+    const std::string& image_name, const std::string& filename) override;
   void load_font(
-    const std::string& font_name, const std::string& filename, int size);
+    const std::string& font_name,
+    const std::string& filename,
+    int size
+  ) override;
   void render_text(
     const std::string& font_name, const std::string& text,
     int x, int y,
     uint8_t r, uint8_t g, uint8_t b
-  );
+  ) override;
 
 private:
   SDL_Window* window_;
