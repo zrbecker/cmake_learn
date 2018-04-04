@@ -11,20 +11,13 @@
 CatGameLogic::CatGameLogic()
   : update_counter_("UPS"),
     frame_counter_("FPS"),
-    cat_x_(100),
-    cat_y_(50),
-    move_right_(true),
-    sin_(),
+    move_out_(true),
+    radius_(0),
     angle_(0) {}
 
 void CatGameLogic::setup(SDLApplication& app) {
   app.load_image("cat", "./resources/cat.png");
   app.resize_image("cat", 50, 50);
-
-  for (int theta = 0; theta < 360; ++theta) {
-    sin_.push_back(sin(theta / 180.0 * M_PI));
-    cos_.push_back(cos(theta / 180.0 * M_PI));
-  }
 
   app.load_font("default", "./resources/IBMPlexSans-Regular.ttf", 14);
 }
@@ -36,18 +29,14 @@ void CatGameLogic::render(
 ) {
   frame_counter_.report_frame(last_frame_seconds);
 
-  double radius = cat_x_;
   double center_x = 400 - 25;
   double center_y = 300 - 25;
-
-  // double sinval = sin_[int(angle_)];
-  // double cosval = cos_[int(angle_)];
 
   double sinval = sin(angle_ / 180.0 * M_PI);
   double cosval = cos(angle_ / 180.0 * M_PI);
 
-  double x = center_x + radius * cosval;
-  double y = center_y + radius * sinval;
+  double x = center_x + radius_ * cosval;
+  double y = center_y + radius_ * sinval;
 
   std::stringstream ups;
   ups << "UPS: " << update_counter_.get_average_frames();
@@ -73,15 +62,17 @@ void CatGameLogic::update(SDLApplication& app, double last_update_seconds) {
     angle_ -= 360;
   }
 
-  if (move_right_) {
-    cat_x_ += CAT_SPEED * last_update_seconds;
-    if (cat_x_ >= 300) {
-      move_right_ = false;
+  if (move_out_) {
+    radius_ += CAT_SPEED * last_update_seconds;
+    if (radius_ >= 300) {
+      move_out_ = false;
+      radius_ = 300;
     }
   } else {
-    cat_x_ -= CAT_SPEED * last_update_seconds;
-    if (cat_x_ <= 0) {
-      move_right_ = true;
+    radius_ -= CAT_SPEED * last_update_seconds;
+    if (radius_ <= 0) {
+      move_out_ = true;
+      radius_ = 0;
     }
   }
 }

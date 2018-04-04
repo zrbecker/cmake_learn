@@ -23,12 +23,8 @@ private:
   FrameCounter update_counter_;
   FrameCounter frame_counter_;
 
-  double cat_x_;
-  double cat_y_;
-  bool move_right_;
-
-  std::vector<double> sin_;
-  std::vector<double> cos_;
+  bool move_out_;
+  double radius_;
   double angle_;
 };
 

@@ -81,8 +81,10 @@ void SDLApplication::run() {
     Uint32 now = SDL_GetTicks();
     double last_update_seconds = (now - last_update) / 1000.0;
     double last_frame_seconds = (now - last_frame) / 1000.0;
+
+    double last_update_after_delay_seconds = (now + 1 - last_update) / 1000.0;
     
-    if ((now + 1 - last_update) / 1000.0 >= 1.0 / 120.0) {
+    if (last_update_after_delay_seconds >= 1.0 / 30.0) {
       game_logic_.update(*this, last_update_seconds);
       last_update = now;
     }
