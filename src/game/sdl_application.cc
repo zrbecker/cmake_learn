@@ -48,6 +48,12 @@ SDLApplication::~SDLApplication() {
   }
   images_.clear();
 
+  for (const auto& font_kvp : fonts_) {
+    const auto& font = font_kvp.second;
+    TTF_CloseFont(font);
+  }
+  fonts_.clear();
+
   SDL_DestroyRenderer(renderer_);
   renderer_ = nullptr;
 
@@ -76,7 +82,7 @@ void SDLApplication::run() {
     double last_update_seconds = (now - last_update) / 1000.0;
     double last_frame_seconds = (now - last_frame) / 1000.0;
     
-    if (last_update_seconds >= 1.0 / 120.0) {
+    if ((now + 1 - last_update) / 1000.0 >= 1.0 / 120.0) {
       game_logic_.update(*this, last_update_seconds);
       last_update = now;
     }
@@ -90,7 +96,7 @@ void SDLApplication::run() {
 }
 
 void SDLApplication::resize_image(const std::string& image_name, int w, int h) {
-  Image image = images_[image_name];
+  Image image = images_.at(image_name);
 
   SDL_Texture* screen_texture = SDL_GetRenderTarget(renderer_);
 
@@ -123,7 +129,7 @@ void SDLApplication::resize_image(const std::string& image_name, int w, int h) {
 }
 
 void SDLApplication::draw_image(const std::string& image_name, int x, int y) {
-  Image image = images_[image_name];
+  Image image = images_.at(image_name);
 
   Uint32 format;
   int access, w, h;
@@ -168,12 +174,22 @@ void SDLApplication::load_image(
   images_[image_name] = image;
 }
 
+void SDLApplication::load_font(
+    const std::string& font_name, const std::string& filename, int size) {
+  TTF_Font* font = TTF_OpenFont(filename.c_str(), size);
+  if (!font) {
+    throw SDLException(std::string("TTF_OpenFont: ") + TTF_GetError());
+  }
+  fonts_[font_name] = font;
+}
+
 void SDLApplication::render_text(
-    TTF_Font* font,
+    const std::string& font_name,
     const std::string& text,
     int x, int y,
     uint8_t r, uint8_t g, uint8_t b
 ) {
+  TTF_Font* font = fonts_.at(font_name);
   SDL_Color color = {r, g, b, 255};
   SDL_Surface* font_surface = TTF_RenderText_Solid(font, text.c_str(), color);
   SDL_Texture* font_texture = SDL_CreateTextureFromSurface(

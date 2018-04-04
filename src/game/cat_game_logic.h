@@ -6,8 +6,6 @@
 #include "frame_counter.h"
 #include "game_logic.h"
 
-#include <SDL_ttf.h>
-
 class CatGameLogic : public GameLogic {
 public:
   CatGameLogic();
@@ -32,8 +30,6 @@ private:
   std::vector<double> sin_;
   std::vector<double> cos_;
   double angle_;
-
-  TTF_Font* font_;
 };
 
 #endif  // GAME_CAT_GAME_LOGIC

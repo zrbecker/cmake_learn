@@ -31,8 +31,10 @@ public:
   void clear_display(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
   void flip_display();
   void load_image(const std::string& image_name, const std::string& filename);
+  void load_font(
+    const std::string& font_name, const std::string& filename, int size);
   void render_text(
-    TTF_Font* font, const std::string& text,
+    const std::string& font_name, const std::string& text,
     int x, int y,
     uint8_t r, uint8_t g, uint8_t b
   );
@@ -43,6 +45,7 @@ private:
   bool running_;
   std::map<std::string, Image> images_;
   GameLogic& game_logic_;
+  std::map<std::string, TTF_Font*> fonts_;
 };
 
 #endif  // GAME_SDL_APPLICATION_H

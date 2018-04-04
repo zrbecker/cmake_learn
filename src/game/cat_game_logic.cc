@@ -26,10 +26,7 @@ void CatGameLogic::setup(SDLApplication& app) {
     cos_.push_back(cos(theta / 180.0 * M_PI));
   }
 
-  font_ = TTF_OpenFont("./resources/IBMPlexSans-Regular.ttf", 14);
-  if (!font_) {
-    throw SDLException(std::string("TTF_OpenFont: ") + TTF_GetError());
-  }
+  app.load_font("default", "./resources/IBMPlexSans-Regular.ttf", 14);
 }
 
 void CatGameLogic::render(
@@ -58,8 +55,8 @@ void CatGameLogic::render(
   fps << "FPS: " << frame_counter_.get_average_frames();
   
   app.clear_display(0, 0, 255, 255);
-  app.render_text(font_, ups.str(), 5, 0, 255, 255, 255);
-  app.render_text(font_, fps.str(), 5, 17, 255, 255, 255);
+  app.render_text("default", ups.str(), 5, 0, 255, 255, 255);
+  app.render_text("default", fps.str(), 5, 17, 255, 255, 255);
   app.draw_image("cat", center_x, center_y);
   app.draw_image("cat", x, y);
   app.flip_display();
