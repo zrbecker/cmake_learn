@@ -13,6 +13,12 @@ class EngineException : public std::runtime_error {
   using std::runtime_error::runtime_error;
 };
 
+enum class Key {
+  Unknown,
+  Left,
+  Right
+};
+
 class Engine {
 public:
   static std::unique_ptr<Engine> create_sdl_engine(GameLogic& game_logic);
@@ -32,6 +38,9 @@ public:
     int x, int y,
     uint8_t r, uint8_t g, uint8_t b
   ) = 0;
+
+  virtual void register_input(const std::string& input_name, Key key) = 0;
+  virtual bool input_is_down(const std::string& input_name) = 0;
 };
 
 }  // namespace engine

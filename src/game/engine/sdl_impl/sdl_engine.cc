@@ -1,6 +1,7 @@
 #include "sdl_engine.h"
 
 #include <iostream>
+#include <memory>
 
 #include "SDL_image.h"
 #include "SDL_ttf.h"
@@ -70,6 +71,17 @@ SDLEngine::~SDLEngine() {
   SDL_Quit();
 }
 
+Key sdl_key_to_engine_key(int keycode) {
+  switch (keycode) {
+    case SDLK_LEFT:
+      return Key::Left;
+    case SDLK_RIGHT:
+      return Key::Right;
+    default:
+      return Key::Unknown;
+  }
+}
+
 void SDLEngine::run() {
   game_logic_.setup(*this);
   running_ = true;
@@ -81,6 +93,22 @@ void SDLEngine::run() {
       if (event.type == SDL_QUIT) {
         running_ = false;
       }
+
+      if (event.type == SDL_KEYDOWN) {
+        Key key = sdl_key_to_engine_key(event.key.keysym.sym);
+        if (key_to_key_info_.count(key) > 0) {
+          auto key_info = key_to_key_info_.at(key);
+          key_info->is_key_down = true;
+        }
+      }
+
+      if (event.type == SDL_KEYUP) {
+        Key key = sdl_key_to_engine_key(event.key.keysym.sym);
+        if (key_to_key_info_.count(key) > 0) {
+          auto key_info = key_to_key_info_.at(key);
+          key_info->is_key_down = false;
+        }
+      }
     }
 
     Uint32 now = SDL_GetTicks();
@@ -89,7 +117,7 @@ void SDLEngine::run() {
 
     double last_update_after_delay_seconds = (now + 1 - last_update) / 1000.0;
     
-    if (last_update_after_delay_seconds >= 1.0 / 30.0) {
+    if (last_update_after_delay_seconds >= 1.0 / 120.0) {
       game_logic_.update(*this, last_update_seconds);
       last_update = now;
     }
@@ -207,6 +235,25 @@ void SDLEngine::render_text(
 
   SDL_DestroyTexture(font_texture);
   SDL_FreeSurface(font_surface);
+}
+
+void SDLEngine::register_input(const std::string& input_name, Key key) {
+  auto key_info = std::make_unique<KeyInfo>();
+  key_info->input_name = input_name;
+  key_info->key = key;
+  key_info->is_key_down = false;
+
+  auto key_info_ptr = key_info.get();
+
+  input_to_key_info_[input_name] = std::move(key_info);
+  key_to_key_info_[key] = key_info_ptr;
+}
+
+bool SDLEngine::input_is_down(const std::string& input_name) {
+  if (input_to_key_info_.count(input_name) > 0) {
+    return input_to_key_info_.at(input_name)->is_key_down;
+  }
+  return false;
 }
 
 }  // namespace engine

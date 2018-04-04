@@ -18,6 +18,12 @@ struct Image {
   SDL_Texture* texture;
 };
 
+struct KeyInfo {
+  std::string input_name;
+  Key key;
+  bool is_key_down;
+};
+
 class SDLEngine : public Engine {
 public:
   SDLEngine(GameLogic& game_logic);
@@ -41,6 +47,8 @@ public:
     int x, int y,
     uint8_t r, uint8_t g, uint8_t b
   ) override;
+  void register_input(const std::string& input_name, Key key) override;
+  bool input_is_down(const std::string& input_name) override;
 
 private:
   SDL_Window* window_;
@@ -49,6 +57,8 @@ private:
   std::map<std::string, Image> images_;
   GameLogic& game_logic_;
   std::map<std::string, TTF_Font*> fonts_;
+  std::map<std::string, std::unique_ptr<KeyInfo>> input_to_key_info_;
+  std::map<Key, KeyInfo*> key_to_key_info_;
 };
   
 }  // namespace engine
