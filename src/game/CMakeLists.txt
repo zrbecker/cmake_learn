@@ -2,8 +2,10 @@ set(SOURCES game.cc sdl_application.cc cat_game_logic.cc frame_counter.cc)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
+include_directories(${SDL2_TTF_INCLUDE_DIRS})
 
 add_executable(game ${SOURCES})
 
 target_link_libraries(game ${SDL2_LIBRARIES})
 target_link_libraries(game ${SDL2_IMAGE_LIBRARIES})
+target_link_libraries(game ${SDL2_TTF_LIBRARIES})

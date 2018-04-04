@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 
 SDLApplication::SDLApplication(GameLogic& game_logic)
     : window_(nullptr),
@@ -18,9 +19,13 @@ SDLApplication::SDLApplication(GameLogic& game_logic)
     throw SDLException(std::string("IMG_Init Error: ") + IMG_GetError());
   }
 
+  if (TTF_Init() != 0) {
+    throw SDLException(std::string("TTF_Init Error: ") + TTF_GetError());
+  }
+
   window_ = SDL_CreateWindow(
     "SDLApplication", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-    600, 600, 0);
+    800, 600, 0);
   if (!window_) {
     throw SDLException(
       std::string("SDL_CreateWindow Error: ") + SDL_GetError()
@@ -49,6 +54,7 @@ SDLApplication::~SDLApplication() {
   SDL_DestroyWindow(window_);
   window_ = nullptr;
 
+  TTF_Quit();
   IMG_Quit();
   SDL_Quit();
 }
@@ -70,7 +76,7 @@ void SDLApplication::run() {
     double last_update_seconds = (now - last_update) / 1000.0;
     double last_frame_seconds = (now - last_frame) / 1000.0;
     
-    if (last_update_seconds >= 1.0 / 30.0) {
+    if (last_update_seconds >= 1.0 / 120.0) {
       game_logic_.update(*this, last_update_seconds);
       last_update = now;
     }
@@ -160,4 +166,22 @@ void SDLApplication::load_image(
   }
 
   images_[image_name] = image;
+}
+
+void SDLApplication::render_text(
+    TTF_Font* font,
+    const std::string& text,
+    int x, int y,
+    uint8_t r, uint8_t g, uint8_t b
+) {
+  SDL_Color color = {r, g, b, 255};
+  SDL_Surface* font_surface = TTF_RenderText_Solid(font, text.c_str(), color);
+  SDL_Texture* font_texture = SDL_CreateTextureFromSurface(
+      renderer_, font_surface);
+
+  SDL_Rect dest_rect = {x, y, font_surface->w, font_surface->h};
+  SDL_RenderCopy(renderer_, font_texture, NULL, &dest_rect);
+
+  SDL_DestroyTexture(font_texture);
+  SDL_FreeSurface(font_surface);
 }
