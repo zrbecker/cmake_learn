@@ -2,6 +2,7 @@
 #define GAME_SCENES_SPACE_GAME_SPACE_GAME_LOGIC_H
 
 #include "game/engine/game_logic.h"
+#include "game/engine/frame_counter.h"
 
 namespace game {
 namespace scenes {
@@ -21,6 +22,8 @@ public:
 
 private:
   double hero_position_;
+  engine::FrameCounter update_counter_;
+  engine::FrameCounter frame_counter_;
 };
 
 }  // namespace space_game
