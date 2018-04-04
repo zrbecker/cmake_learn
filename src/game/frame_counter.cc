@@ -30,8 +30,11 @@ void FrameCounter::report_frame(double seconds_passed) {
     for (int i = 0; i < frame_counts_.size() - 1; ++i) {
       total_frames += frame_counts_[i];
     }
-    double average_frames = double(total_frames) / (frame_counts_.size() - 1);
-    std::cout << name_ << ": " << average_frames << std::endl;
+    average_frames_ = double(total_frames) / (frame_counts_.size() - 1);
     last_print_message_ = total_seconds_;
   }
+}
+
+double FrameCounter::get_average_frames() const {
+  return average_frames_;
 }

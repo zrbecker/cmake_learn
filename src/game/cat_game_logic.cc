@@ -1,15 +1,16 @@
 #include "cat_game_logic.h"
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
+#include <sstream>
 
 #include "sdl_application.h"
 
 #include "SDL_ttf.h"
 
 CatGameLogic::CatGameLogic()
-  : update_counter_("UPS", 10, 30),
-    frame_counter_("FPS", 10, 30),
+  : update_counter_("UPS"),
+    frame_counter_("FPS"),
     cat_x_(100),
     cat_y_(50),
     move_right_(true),
@@ -50,9 +51,15 @@ void CatGameLogic::render(
 
   double x = center_x + radius * cosval;
   double y = center_y + radius * sinval;
+
+  std::stringstream ups;
+  ups << "UPS: " << update_counter_.get_average_frames();
+  std::stringstream fps;
+  fps << "FPS: " << frame_counter_.get_average_frames();
   
   app.clear_display(0, 0, 255, 255);
-  app.render_text(font_, "Hello World!", 0, 0, 255, 255, 255);
+  app.render_text(font_, ups.str(), 5, 0, 255, 255, 255);
+  app.render_text(font_, fps.str(), 5, 17, 255, 255, 255);
   app.draw_image("cat", center_x, center_y);
   app.draw_image("cat", x, y);
   app.flip_display();
