@@ -1,12 +1,11 @@
 #include "cat_game_logic.h"
 
 #include <cmath>
-#include <iostream>
 #include <sstream>
 
 #include "sdl_application.h"
 
-#include "SDL_ttf.h"
+const int CAT_SIZE = 100;
 
 CatGameLogic::CatGameLogic()
   : update_counter_("UPS"),
@@ -17,7 +16,7 @@ CatGameLogic::CatGameLogic()
 
 void CatGameLogic::setup(SDLApplication& app) {
   app.load_image("cat", "./resources/cat.png");
-  app.resize_image("cat", 50, 50);
+  app.resize_image("cat", CAT_SIZE, CAT_SIZE);
 
   app.load_font("default", "./resources/IBMPlexSans-Regular.ttf", 14);
 }
@@ -29,8 +28,8 @@ void CatGameLogic::render(
 ) {
   frame_counter_.report_frame(last_frame_seconds);
 
-  double center_x = 400 - 25;
-  double center_y = 300 - 25;
+  double center_x = 400 - CAT_SIZE / 2;
+  double center_y = 300 - CAT_SIZE / 2;
 
   double sinval = sin(angle_ / 180.0 * M_PI);
   double cosval = cos(angle_ / 180.0 * M_PI);
