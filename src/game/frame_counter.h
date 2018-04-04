@@ -7,19 +7,17 @@
 class FrameCounter {
 public:
   FrameCounter(
-    const std::string& name,
-    double print_frequency_seconds = 1.0,
-    unsigned print_moving_average_length = 5
+    double update_average_frequency_seconds = 1.0,
+    unsigned moving_average_length = 5
   );
   void report_frame(double seconds_passed);
 
   double get_average_frames() const;
 
 private:
-  std::string name_;
-  double print_frequency_seconds_;
-  unsigned print_moving_average_length_;
-  double last_print_message_;
+  double update_average_frequency_seconds_;
+  unsigned moving_average_length_;
+  double last_average_update_;
   double total_seconds_;
   std::vector<unsigned> frame_counts_;
   double average_frames_;

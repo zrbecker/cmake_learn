@@ -8,8 +8,8 @@
 const int CAT_SIZE = 100;
 
 CatGameLogic::CatGameLogic()
-  : update_counter_("UPS"),
-    frame_counter_("FPS"),
+  : update_counter_(),
+    frame_counter_(),
     move_out_(true),
     radius_(0),
     angle_(0) {}
