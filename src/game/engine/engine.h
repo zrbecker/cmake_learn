@@ -21,8 +21,6 @@ enum class Key {
 
 class Engine {
 public:
-  static std::unique_ptr<Engine> create_sdl_engine(GameLogic& game_logic);
-
   virtual void run() = 0;
 
   virtual void draw_image(const std::string& image_name, int x, int y) = 0;

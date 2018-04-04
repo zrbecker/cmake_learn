@@ -1,4 +1,4 @@
-set(SOURCES sdl_engine.cc)
+set(SOURCES sdl_engine.cc create_sdl_engine.cc)
 
 include_directories(${SDL2_INCLUDE_DIRS})
 include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
