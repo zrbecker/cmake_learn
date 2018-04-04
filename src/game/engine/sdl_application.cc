@@ -5,6 +5,9 @@
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 
+namespace game {
+namespace engine {
+
 SDLApplication::SDLApplication(GameLogic& game_logic)
     : window_(nullptr),
       renderer_(nullptr),
@@ -203,3 +206,6 @@ void SDLApplication::render_text(
   SDL_DestroyTexture(font_texture);
   SDL_FreeSurface(font_surface);
 }
+
+}  // namespace engine
+}  // namespace game

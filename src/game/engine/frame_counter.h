@@ -1,8 +1,11 @@
-#ifndef GAME_FRAME_COUNTER_H
-#define GAME_FRAME_COUNTER_H
+#ifndef GAME_ENGINE_FRAME_COUNTER_H
+#define GAME_ENGINE_FRAME_COUNTER_H
 
 #include <string>
 #include <vector>
+
+namespace game {
+namespace engine {
 
 class FrameCounter {
 public:
@@ -22,5 +25,8 @@ private:
   std::vector<unsigned> frame_counts_;
   double average_frames_;
 };
+
+}  // engine
+}  // game
 
 #endif  // GAME_FRAME_COUNTER_H

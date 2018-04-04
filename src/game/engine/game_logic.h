@@ -1,5 +1,8 @@
-#ifndef GAME_GAME_LOGIC_H
-#define GAME_GAME_LOGIC_H
+#ifndef GAME_ENGINE_GAME_LOGIC_H
+#define GAME_ENGINE_GAME_LOGIC_H
+
+namespace game {
+namespace engine {
 
 class SDLApplication;
 
@@ -15,4 +18,7 @@ public:
   virtual void update(SDLApplication& app, double last_update_seconds) = 0;
 };
 
-#endif  // GAME_GAME_LOGIC_H
+}  // namespace engine
+}  // namespace game
+
+#endif  // GAME_ENGINE_GAME_LOGIC_H

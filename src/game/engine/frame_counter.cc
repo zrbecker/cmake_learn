@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+namespace game {
+namespace engine {
+
 FrameCounter::FrameCounter(
     double update_average_frequency_seconds,
     unsigned moving_average_length)
@@ -37,3 +40,6 @@ void FrameCounter::report_frame(double seconds_passed) {
 double FrameCounter::get_average_frames() const {
   return average_frames_;
 }
+  
+}  // namespace engine
+}  // namespace game

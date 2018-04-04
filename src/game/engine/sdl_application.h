@@ -1,5 +1,5 @@
-#ifndef GAME_SDL_APPLICATION_H
-#define GAME_SDL_APPLICATION_H
+#ifndef GAME_ENGINE_SDL_APPLICATION_H
+#define GAME_ENGINE_SDL_APPLICATION_H
 
 #include <map>
 #include <stdexcept>
@@ -9,6 +9,9 @@
 #include <SDL_ttf.h>
 
 #include "game_logic.h"
+
+namespace game {
+namespace engine {
 
 class SDLException : public std::runtime_error {
   using std::runtime_error::runtime_error;
@@ -47,5 +50,8 @@ private:
   GameLogic& game_logic_;
   std::map<std::string, TTF_Font*> fonts_;
 };
+  
+}  // namespace engine
+}  // namespace game
 
-#endif  // GAME_SDL_APPLICATION_H
+#endif  // GAME_ENGINE_SDL_APPLICATION_H

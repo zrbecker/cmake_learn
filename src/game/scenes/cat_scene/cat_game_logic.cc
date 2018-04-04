@@ -3,7 +3,11 @@
 #include <cmath>
 #include <sstream>
 
-#include "sdl_application.h"
+#include "game/engine/sdl_application.h"
+
+namespace game {
+namespace scenes {
+namespace cat_scene {
 
 const int CAT_SIZE = 100;
 
@@ -14,7 +18,7 @@ CatGameLogic::CatGameLogic()
     radius_(0),
     angle_(0) {}
 
-void CatGameLogic::setup(SDLApplication& app) {
+void CatGameLogic::setup(engine::SDLApplication& app) {
   app.load_image("cat", "./resources/cat.png");
   app.resize_image("cat", CAT_SIZE, CAT_SIZE);
 
@@ -22,7 +26,7 @@ void CatGameLogic::setup(SDLApplication& app) {
 }
 
 void CatGameLogic::render(
-  SDLApplication& app,
+  engine::SDLApplication& app,
   double last_update_seconds,
   double last_frame_seconds
 ) {
@@ -50,7 +54,8 @@ void CatGameLogic::render(
   app.flip_display();
 }
 
-void CatGameLogic::update(SDLApplication& app, double last_update_seconds) {
+void CatGameLogic::update(
+    engine::SDLApplication& app, double last_update_seconds) {
   update_counter_.report_frame(last_update_seconds);
 
   const double CAT_SPEED = 150.0;  // Pixels per second.
@@ -75,3 +80,7 @@ void CatGameLogic::update(SDLApplication& app, double last_update_seconds) {
     }
   }
 }
+
+}  // namespace cat_scene
+}  // namespace scenes
+}  // game
